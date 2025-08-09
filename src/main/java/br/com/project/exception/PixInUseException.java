@@ -1,4 +1,4 @@
-package br.com.project.expction;
+package br.com.project.exception;
 
 public class PixInUseException extends RuntimeException {
     public PixInUseException(String message) {

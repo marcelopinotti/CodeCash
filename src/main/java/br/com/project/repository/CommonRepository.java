@@ -1,8 +1,7 @@
 package br.com.project.repository;
 
 
-import br.com.project.expction.NoFundsEnoughException;
-import br.com.project.model.AccountWallet;
+import br.com.project.exception.NoFundsEnoughException;
 import br.com.project.model.Money;
 import br.com.project.model.MoneyAudit;
 import br.com.project.model.Wallet;

@@ -1,9 +1,8 @@
 package br.com.project.repository;
 
-import br.com.project.expction.AccountWithInvestimentException;
-import br.com.project.expction.InvestmentNotFoundException;
-import br.com.project.expction.PixInUseException;
-import br.com.project.expction.WalletNotFoundException;
+import br.com.project.exception.AccountWithInvestimentException;
+import br.com.project.exception.InvestmentNotFoundException;
+import br.com.project.exception.WalletNotFoundException;
 import br.com.project.model.AccountWallet;
 import br.com.project.model.Investiment;
 import br.com.project.model.InvestmentWallet;

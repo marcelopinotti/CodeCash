@@ -1,4 +1,4 @@
-package br.com.project.expction;
+package br.com.project.exception;
 
 public class NoFundsEnoughException extends RuntimeException {
     public NoFundsEnoughException(String message) {

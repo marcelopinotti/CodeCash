@@ -1,7 +1,7 @@
 package br.com.project.repository;
 
-import br.com.project.expction.AccountNotFoundException;
-import br.com.project.expction.PixInUseException;
+import br.com.project.exception.AccountNotFoundException;
+import br.com.project.exception.PixInUseException;
 import br.com.project.model.AccountWallet;
 
 import java.util.List;

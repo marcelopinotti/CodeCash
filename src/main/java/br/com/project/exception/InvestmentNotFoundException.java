@@ -1,4 +1,4 @@
-package br.com.project.expction;
+package br.com.project.exception;
 
 public class InvestmentNotFoundException extends RuntimeException {
     public InvestmentNotFoundException(String message) {
