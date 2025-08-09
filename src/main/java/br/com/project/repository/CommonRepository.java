@@ -5,6 +5,7 @@ import br.com.project.expction.NoFundsEnoughException;
 import br.com.project.model.AccountWallet;
 import br.com.project.model.Money;
 import br.com.project.model.MoneyAudit;
+import br.com.project.model.Wallet;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -18,7 +19,7 @@ import static br.com.project.model.BankService.ACCOUNT;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class CommonRepository {
 
-    public static void checkFoundsForTransaction(final AccountWallet source, final long amount) {
+    public static void checkFoundsForTransaction(final Wallet source, final long amount) {
         if (source.getFound() < amount) {
             throw new NoFundsEnoughException("Sua conta não possui saldo suficiente para realizar esta transação.");
         }

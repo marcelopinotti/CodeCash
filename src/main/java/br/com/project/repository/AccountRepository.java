@@ -1,6 +1,7 @@
 package br.com.project.repository;
 
 import br.com.project.expction.AccountNotFoundException;
+import br.com.project.expction.PixInUseException;
 import br.com.project.model.AccountWallet;
 
 import java.util.List;
@@ -41,6 +42,12 @@ public class AccountRepository {
     }
 
     public AccountWallet create(final List<String> pix, final long initialFunds) {
+        var pixInUse = accounts.stream().flatMap(a -> a.getPix().stream()).toList();
+        for (var p : pix) {
+           if (pixInUse.contains(p)) {
+               throw new PixInUseException("O PIX " + p + " já está em uso.");
+           }
+        }
         var newAccount = new AccountWallet(initialFunds, pix);
         accounts.add(newAccount);
         return newAccount;
