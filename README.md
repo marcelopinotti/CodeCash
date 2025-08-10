@@ -1,6 +1,5 @@
 # CodeCash
 
-CodeCash: Simulação de Sistema Bancário Backend em Java
 Bem-vindo ao CodeCash, um projeto de backend desenvolvido em Java e gerenciado com Gradle, que simula as operações fundamentais de um sistema bancário.
 
 Este projeto serve como um exercício prático para aprimorar a compreensão de conceitos de programação orientada a objetos e o uso de ferramentas de construção (build) em Java.
