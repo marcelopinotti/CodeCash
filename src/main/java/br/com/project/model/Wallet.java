@@ -49,4 +49,11 @@ public abstract class Wallet {
         return money.stream().flatMap(m -> m.getHistory().stream()).toList();
     }
 
+    @Override
+    public String toString() {
+        return "Wallet{" +
+                "service=" + service +
+                ", money= R$" + money.size()/100 + "," + money.size()%100 +
+                '}';
+    }
 }

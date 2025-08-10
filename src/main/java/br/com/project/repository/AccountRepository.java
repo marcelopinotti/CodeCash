@@ -3,14 +3,18 @@ package br.com.project.repository;
 import br.com.project.exception.AccountNotFoundException;
 import br.com.project.exception.PixInUseException;
 import br.com.project.model.AccountWallet;
+import br.com.project.model.MoneyAudit;
 
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static br.com.project.repository.CommonRepository.checkFoundsForTransaction;
 
 public class AccountRepository {
 
-    private List<AccountWallet> accounts;
+    private final List<AccountWallet> accounts = new ArrayList<>();
 
     public List<AccountWallet> list() {
         return this.accounts;
@@ -42,16 +46,22 @@ public class AccountRepository {
     }
 
     public AccountWallet create(final List<String> pix, final long initialFunds) {
-        var pixInUse = accounts.stream().flatMap(a -> a.getPix().stream()).toList();
-        for (var p : pix) {
-           if (pixInUse.contains(p)) {
-               throw new PixInUseException("O PIX " + p + " já está em uso.");
-           }
+        if (!accounts.isEmpty()) {
+            var pixInUse = accounts.stream().flatMap(a -> a.getPix().stream()).toList();
+            for (var p : pix) {
+                if (pixInUse.contains(p)) {
+                    throw new PixInUseException("O PIX " + p + " já está em uso.");
+                }
+            }
         }
         var newAccount = new AccountWallet(initialFunds, pix);
         accounts.add(newAccount);
         return newAccount;
     }
 
+    public Map<OffsetDateTime, List<MoneyAudit>> getHistory(String pix) {
+        var account = findByPix(pix);
+        return account.getHistory();
+    }
 
 }

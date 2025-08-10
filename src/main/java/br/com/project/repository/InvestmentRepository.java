@@ -12,8 +12,8 @@ import java.util.List;
 
 import static br.com.project.repository.CommonRepository.checkFoundsForTransaction;
 
-public class InvestimentRepository {
-    private long nextId;
+public class InvestmentRepository {
+    private long nextId = 0;
     private final List<Investment> investiments = new ArrayList<>();
     private final List<InvestmentWallet> wallets = new ArrayList<>();
 
@@ -25,10 +25,12 @@ public class InvestimentRepository {
     }
 
     public InvestmentWallet initInvestiment(final AccountWallet account, final long id){
-        var accountsInUse = wallets.stream().map(InvestmentWallet::getAccount).toList();
+        if(!wallets.isEmpty()) {
+            var accountsInUse = wallets.stream().map(InvestmentWallet::getAccount).toList();
             if (accountsInUse.contains(account)) {
-                throw new AccountWithInvestimentException("A conta "+ account + " já possui uma carteira de investimento.");
+                throw new AccountWithInvestimentException("A conta " + account + " já possui uma carteira de investimento.");
             }
+        }
         var investment = findById(id);
         checkFoundsForTransaction(account,investment.initialFounds());
         var wallet = new InvestmentWallet(investment,account,investment.initialFounds());
