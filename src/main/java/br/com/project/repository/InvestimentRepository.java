@@ -4,7 +4,7 @@ import br.com.project.exception.AccountWithInvestimentException;
 import br.com.project.exception.InvestmentNotFoundException;
 import br.com.project.exception.WalletNotFoundException;
 import br.com.project.model.AccountWallet;
-import br.com.project.model.Investiment;
+import br.com.project.model.Investment;
 import br.com.project.model.InvestmentWallet;
 
 import java.util.ArrayList;
@@ -14,12 +14,12 @@ import static br.com.project.repository.CommonRepository.checkFoundsForTransacti
 
 public class InvestimentRepository {
     private long nextId;
-    private final List<Investiment> investiments = new ArrayList<>();
+    private final List<Investment> investiments = new ArrayList<>();
     private final List<InvestmentWallet> wallets = new ArrayList<>();
 
-    public Investiment create(final long tax, final long initialFounds) {
+    public Investment create(final long tax, final long initialFounds) {
         this.nextId++;
-        var investiment = new Investiment(this.nextId,tax,initialFounds);
+        var investiment = new Investment(this.nextId,tax,initialFounds);
         investiments.add(investiment);
         return investiment;
     }
@@ -57,11 +57,11 @@ public class InvestimentRepository {
         return wallet;
     }
 
-    public void updateAmount(final long percent){
-        wallets.forEach(w -> w.updateAmount(percent));
+    public void updateAmount(){
+        wallets.forEach(w -> w.updateAmount(w.getInvestment().tax()));
     }
 
-    public Investiment findById(final long id) {
+    public Investment findById(final long id) {
         return investiments.stream().filter(a -> a.id() == id).findFirst().orElseThrow(
                 () -> new InvestmentNotFoundException("O investimento com o ID " + id + " não foi encontrado.")
         );
@@ -78,7 +78,7 @@ public class InvestimentRepository {
     public List<InvestmentWallet> listWallets() {
         return this.wallets;
     }
-    public List<Investiment> list() {
+    public List<Investment> list() {
         return this.investiments;
     }
 

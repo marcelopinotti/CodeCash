@@ -1,6 +1,6 @@
 package br.com.project.model;
 
-public record Investiment(
+public record Investment(
         long id,
         long tax,
         long initialFounds)

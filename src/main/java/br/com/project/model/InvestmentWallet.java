@@ -13,10 +13,10 @@ import static br.com.project.model.BankService.INVESTIMENT;
 @Getter
 public class InvestmentWallet extends Wallet {
 
-    private final Investiment investment;
+    private final Investment investment;
     private final AccountWallet account;
 
-    public InvestmentWallet(final Investiment investment, AccountWallet account, final long amount) {
+    public InvestmentWallet(final Investment investment, AccountWallet account, final long amount) {
         super(INVESTIMENT);
         this.investment = investment;
         this.account = account;
