@@ -3,7 +3,6 @@ package br.com.project;
 import br.com.project.exception.AccountNotFoundException;
 import br.com.project.exception.NoFundsEnoughException;
 import br.com.project.exception.WalletNotFoundException;
-import br.com.project.model.AccountWallet;
 import br.com.project.model.MoneyAudit;
 import br.com.project.repository.AccountRepository;
 import br.com.project.repository.InvestmentRepository;
@@ -11,10 +10,10 @@ import br.com.project.repository.InvestmentRepository;
 
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.stream.Collectors;
+
 
 import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
-import static java.time.temporal.ChronoUnit.SECONDS;
+
 
 public class Main {
     static Scanner sc = new Scanner(System.in);
@@ -80,7 +79,7 @@ public class Main {
             }
         }
 
-        System.out.println("Programa encerrado.");
+
         sc.close();
     }
 
