@@ -27,7 +27,8 @@ public class Main {
         System.out.println("|    Seja bem vindo ao CodeCash     |");
         System.out.println("|                                   |");
         System.out.println("-------------------------------------");
-        while (true){
+
+        while (sc.hasNext()){
             System.out.println("Selecione a operação desejada:");
             System.out.println("1- Criar uma conta");
             System.out.println("2- Criar um investimento");
@@ -37,14 +38,22 @@ public class Main {
             System.out.println("6- Transferir entre contas");
             System.out.println("7- Investir");
             System.out.println("8- Sacar Investimento");
-            System.out.println("8- Sacar Investimento");
             System.out.println("9- Listar contas");
             System.out.println("10- Listar investimentos");
             System.out.println("11- Listar carteira de investimento");
             System.out.println("12- Atualizar investimentos");
             System.out.println("13- Histórico de conta");
             System.out.println("14- Sair");
+
+
+            if (!sc.hasNextInt()) {
+                System.out.println("Entrada inválida. Encerrando.");
+                break;
+            }
+
             var option = sc.nextInt();
+            sc.nextLine();
+
             switch (option){
                 case 1 -> createAccount();
                 case 2 -> createInvestment();
@@ -62,25 +71,26 @@ public class Main {
                     System.out.println("Investimentos atualizados com sucesso!");
                 }
                 case 13-> checkHistory();
-                case 14-> System.exit(0);
+                case 14-> {
+                    System.out.println("Saindo do sistema...");
+                    System.exit(0);
+                }
                 default->
-                    System.out.println("Opção inválida!");
+                        System.out.println("Opção inválida!");
             }
-
-
-
-
-
-
         }
 
-
+        System.out.println("Programa encerrado.");
+        sc.close();
     }
+
     private static void createAccount() {
         System.out.println("Informe as chaves Pix separadas por ';' ");
         var pix = Arrays.stream(sc.next().split(";")).toList();
+        sc.nextLine();
         System.out.println("Informe o valor inicial de depósito");
         var amount = sc.nextLong();
+        sc.nextLine();
         var wallet = accountRepository.create(pix,amount);
         System.out.println("Conta criada: "+wallet);
     }
@@ -88,8 +98,10 @@ public class Main {
     private static void createInvestment() {
         System.out.println("Informe a taxa do investimento: ");
         var tax = sc.nextInt();
+        sc.nextLine();
         System.out.println("Informe o valor inicial de depósito");
         var initialFunds = sc.nextLong();
+        sc.nextLine();
         var investment = investmentRepository.create(tax,initialFunds);
         System.out.println("Investimento criado: "+investment);
     }
@@ -97,19 +109,23 @@ public class Main {
     private static void deposit(){
         System.out.println("Informe o valor a ser depositado:");
         var amount = sc.nextLong();
+        sc.nextLine();
         System.out.println("Informe o pix da conta:");
         var pix = sc.next();
+        sc.nextLine();
         try{
-        accountRepository.deposit(pix,amount);
-    } catch (AccountNotFoundException e) {
+            accountRepository.deposit(pix,amount);
+        } catch (AccountNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
     private static void withdraw(){
         System.out.println("Informe o valor a ser sacado:");
         var amount = sc.nextLong();
+        sc.nextLine();
         System.out.println("Informe o pix da conta:");
         var pix = sc.next();
+        sc.nextLine();
         try {
             accountRepository.withdraw(pix, amount);
         } catch (NoFundsEnoughException | AccountNotFoundException e) {
@@ -120,10 +136,13 @@ public class Main {
     private static void transferToAccount(){
         System.out.println("Informe o pix da conta de origem:");
         var source = sc.next();
+        sc.nextLine();
         System.out.println("Informe o pix da conta destino:");
         var target = sc.next();
+        sc.nextLine();
         System.out.println("Informe o valor a ser depositado:");
         var amount = sc.nextLong();
+        sc.nextLine();
 
         try{
             accountRepository.transferMoney(source,target,amount);
@@ -135,9 +154,11 @@ public class Main {
     private static void createInvestmentWallet(){
         System.out.println("Informe o pix da conta:");
         var pix = sc.next();
+        sc.nextLine();
         var account = accountRepository.findByPix(pix);
         System.out.println("Informe o id do investimento:");
         var investmentId = sc.nextInt();
+        sc.nextLine();
         var investment = investmentRepository.initInvestiment(account,investmentId);
         System.out.println("Carteira de investimento criada: "+investment);
     }
@@ -145,8 +166,10 @@ public class Main {
     private static void incInvest(){
         System.out.println("Informe o valor a ser investido:");
         var amount = sc.nextLong();
+        sc.nextLine();
         System.out.println("Informe o pix da conta para o investimento:");
         var pix = sc.next();
+        sc.nextLine();
         try{
             accountRepository.deposit(pix,amount);
         } catch (WalletNotFoundException | AccountNotFoundException e) {
@@ -157,8 +180,10 @@ public class Main {
     private static void rescueInvestment(){
         System.out.println("Informe o valor para ser sacado:");
         var amount = sc.nextLong();
+        sc.nextLine();
         System.out.println("Informe o pix da conta para resgate do investimento:");
         var pix = sc.next();
+        sc.nextLine();
         try {
             accountRepository.withdraw(pix, amount);
         } catch (NoFundsEnoughException | AccountNotFoundException e) {
@@ -169,6 +194,7 @@ public class Main {
     private static void checkHistory() {
         System.out.println("Informe a chave Pix da conta para verificar o extrato:");
         var pix = sc.next();
+        sc.nextLine();
         try {
             var account = accountRepository.findByPix(pix);
 
@@ -212,7 +238,4 @@ public class Main {
         System.out.println("  Serviço: " + transaction.targetService());
         System.out.println("  Descrição: " + transaction.description());
     }
-
-
-
 }
