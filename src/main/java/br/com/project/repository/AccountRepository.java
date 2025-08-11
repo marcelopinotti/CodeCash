@@ -59,9 +59,6 @@ public class AccountRepository {
         return newAccount;
     }
 
-    public Map<OffsetDateTime, List<MoneyAudit>> getHistory(String pix) {
-        var account = findByPix(pix);
-        return account.getHistory();
-    }
+
 
 }

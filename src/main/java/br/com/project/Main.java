@@ -4,6 +4,7 @@ import br.com.project.exception.AccountNotFoundException;
 import br.com.project.exception.NoFundsEnoughException;
 import br.com.project.exception.WalletNotFoundException;
 import br.com.project.model.AccountWallet;
+import br.com.project.model.MoneyAudit;
 import br.com.project.repository.AccountRepository;
 import br.com.project.repository.InvestmentRepository;
 
@@ -169,29 +170,35 @@ public class Main {
         System.out.println("Informe a chave Pix da conta para verificar o extrato:");
         var pix = sc.next();
         try {
-
-            var sortedHistory = accountRepository.getHistory(pix);
-
+            var account = accountRepository.findByPix(pix);
 
             System.out.println("=== Histórico de Transações da Conta ===");
-            sortedHistory.forEach((date, transactions) -> {
-                System.out.println("Data: " + date.format(ISO_DATE_TIME));
-                transactions.forEach(transaction -> {
-                    System.out.println("  ID da Transação: " + transaction.transactionId());
-                    System.out.println("  Serviço: " + transaction.targetService());
-                    System.out.println("  Descrição: " + transaction.description());
-                });
-            });
+            var acctHistory = account.getFinancialTransaction();
+            if (acctHistory == null || acctHistory.isEmpty()) {
+                System.out.println("Sem movimentações na conta para esta chave Pix.");
+            } else {
+                acctHistory.stream()
+                        .sorted(java.util.Comparator.comparing(br.com.project.model.MoneyAudit::createdAt))
+                        .forEach(audit -> {
+                            printAuditCore(audit);
+                            System.out.println("  Data: " + audit.createdAt().format(ISO_DATE_TIME));
+                        });
+            }
+
             System.out.println("\n=== Histórico de Investimentos ===");
             try {
                 var wallet = investmentRepository.findWalletByAccountPix(pix);
                 var investmentHistory = wallet.getFinancialTransaction();
-                investmentHistory.forEach(investment -> {
-                    System.out.println("  ID da Transação: " + investment.transactionId());
-                    System.out.println("  Serviço: " + investment.targetService());
-                    System.out.println("  Descrição: " + investment.description());
-                    System.out.println("  Data: " + investment.createdAt().format(ISO_DATE_TIME));
-                });
+                if (investmentHistory == null || investmentHistory.isEmpty()) {
+                    System.out.println("Sem histórico de investimentos para esta conta.");
+                } else {
+                    investmentHistory.stream()
+                            .sorted(java.util.Comparator.comparing(br.com.project.model.MoneyAudit::createdAt))
+                            .forEach(audit -> {
+                                printAuditCore(audit);
+                                System.out.println("  Data: " + audit.createdAt().format(ISO_DATE_TIME));
+                            });
+                }
             } catch (WalletNotFoundException e) {
                 System.out.println("Sem histórico de investimentos para esta conta.");
             }
@@ -200,5 +207,12 @@ public class Main {
             System.out.println(e.getMessage());
         }
     }
+    private static void printAuditCore(final MoneyAudit transaction) {
+        System.out.println("  ID da Transação: " + transaction.transactionId());
+        System.out.println("  Serviço: " + transaction.targetService());
+        System.out.println("  Descrição: " + transaction.description());
+    }
+
+
 
 }
