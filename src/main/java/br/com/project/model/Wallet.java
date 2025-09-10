@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-@ToString
 public abstract class Wallet {
     @Getter
     private final BankService service;

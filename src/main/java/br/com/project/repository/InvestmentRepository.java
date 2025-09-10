@@ -24,7 +24,7 @@ public class InvestmentRepository {
         return investiment;
     }
 
-    public InvestmentWallet initInvestiment(final AccountWallet account, final long id){
+    public InvestmentWallet initInvestment(final AccountWallet account, final long id){
         if(!wallets.isEmpty()) {
             var accountsInUse = wallets.stream().map(InvestmentWallet::getAccount).toList();
             if (accountsInUse.contains(account)) {

@@ -27,7 +27,7 @@ public class Main {
         System.out.println("|                                   |");
         System.out.println("-------------------------------------");
 
-        while (sc.hasNext()){
+        while (true){
             System.out.println("Selecione a operação desejada:");
             System.out.println("1- Criar uma conta");
             System.out.println("2- Criar um investimento");
@@ -44,16 +44,11 @@ public class Main {
             System.out.println("13- Histórico de conta");
             System.out.println("14- Sair");
 
+            try {
+                var option = sc.nextInt();
+                sc.nextLine();
 
-            if (!sc.hasNextInt()) {
-                System.out.println("Entrada inválida. Encerrando.");
-                break;
-            }
-
-            var option = sc.nextInt();
-            sc.nextLine();
-
-            switch (option){
+                switch (option){
                 case 1 -> createAccount();
                 case 2 -> createInvestment();
                 case 3 -> createInvestmentWallet();
@@ -76,11 +71,14 @@ public class Main {
                 }
                 default->
                         System.out.println("Opção inválida!");
+                }
+            } catch (java.util.InputMismatchException e) {
+                System.out.println("Entrada inválida. Por favor, insira um número.");
+                sc.nextLine(); // Limpa o buffer do scanner
+            } catch (Exception e) {
+                System.out.println("Ocorreu um erro: " + e.getMessage());
             }
         }
-
-
-        sc.close();
     }
 
     private static void createAccount() {
@@ -158,7 +156,7 @@ public class Main {
         System.out.println("Informe o id do investimento:");
         var investmentId = sc.nextInt();
         sc.nextLine();
-        var investment = investmentRepository.initInvestiment(account,investmentId);
+        var investment = investmentRepository.initInvestment(account,investmentId);
         System.out.println("Carteira de investimento criada: "+investment);
     }
 
@@ -170,7 +168,8 @@ public class Main {
         var pix = sc.next();
         sc.nextLine();
         try{
-            accountRepository.deposit(pix,amount);
+            investmentRepository.deposit(pix,amount);
+            System.out.println("Investimento realizado com sucesso!");
         } catch (WalletNotFoundException | AccountNotFoundException e) {
             System.out.println(e.getMessage());
         }
@@ -184,8 +183,9 @@ public class Main {
         var pix = sc.next();
         sc.nextLine();
         try {
-            accountRepository.withdraw(pix, amount);
-        } catch (NoFundsEnoughException | AccountNotFoundException e) {
+            investmentRepository.withdraw(pix, amount);
+            System.out.println("Resgate realizado com sucesso!");
+        } catch (NoFundsEnoughException | AccountNotFoundException | WalletNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
